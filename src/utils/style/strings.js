@@ -1,0 +1,1 @@
+export const NO_POST_COMMENTS_IMG='http://ic.pics.livejournal.com/snova_17/42505524/818092/818092_original.jpg'
