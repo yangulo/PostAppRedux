@@ -137,12 +137,6 @@ class NewPost extends Component{
         )
     }
 }
-
-// function mapDispatchToProps(dispatch) {
-//     return {
-//       newPost: (post)=>dispatch(createPost(post)),
-//     }
-//   }
   
 function mapStateToProps({post}) {  
     console.log(post)

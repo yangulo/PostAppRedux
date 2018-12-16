@@ -60,16 +60,4 @@ export const createPost = (post) =>
         console.log('Request failed',error)
     })
     
-// export const save = (post) =>
-//   fetch(`${api}/posts`, { 
-//       method: 'POST',
-//       headers: {
-//         ...headers,
-//         'Content-Type': 'application/json'
-//       }, 
-//       body: JSON.stringify(post)
-//     }).then(res => res.json())
-//     .catch(function (error) {
-//         console.log('Request failed', error);  
-//   });
 

@@ -8,7 +8,7 @@ export const REMOVE_COMMENT='REMOVE_COMMENT'
 //export const GET_CATEGORIES
 
 
-export const createPost = (post) => dispatch => 
+export const createPost = (post) => (dispatch) => 
     api.createPost(post).then(post => dispatch(
         {
             type: POST_COMMENT,

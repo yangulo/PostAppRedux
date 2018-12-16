@@ -73,20 +73,10 @@ class AllPostsList extends Component{
                         <AddIcon />
                     </Fab>
                 </div>
-                <div>{this.props.post}</div>
             </div>
         )
     }
 }
 
-function mapStateToProps({post}) {
-    return {
-      post
-    }
-}
+export default (AllPostsList)
 
-// export default (AllPostsList)
-
-export default connect(
-    mapStateToProps
-  )(AllPostsList)
