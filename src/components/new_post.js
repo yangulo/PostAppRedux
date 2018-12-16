@@ -26,7 +26,6 @@ class NewPost extends Component{
         }
     }
 
-    // Should be called on submit button? 
     generateTimestamp=()=>{
         let date = new Date()
         return new Date(date).getTime()
@@ -89,6 +88,7 @@ class NewPost extends Component{
 
     createPost =(event)=>{
         this.props.createPost(this.state.post)
+        window.location = '/'
     }
     
     render(){

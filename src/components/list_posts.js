@@ -2,7 +2,6 @@
 import React, {Component} from 'react'
 import * as api from '../utils/api'
 import AllCategoriesList from './list_categories'
-import { connect } from 'react-redux'
 // Expansion Panel
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'

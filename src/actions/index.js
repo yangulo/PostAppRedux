@@ -1,12 +1,12 @@
 // api
 import * as api from '../utils/api'
-
+// Posts
 export const POST_COMMENT='POST_COMMENT'
 export const REMOVE_POST='REMOVE_POST'
+export const UPDATE_COMMENT='UPDATE_COMMENT'
+// Comments
 export const ADD_COMMENT='ADD_COMMENT'
 export const REMOVE_COMMENT='REMOVE_COMMENT'
-//export const GET_CATEGORIES
-
 
 export const createPost = (post) => (dispatch) => 
     api.createPost(post).then(post => dispatch(
@@ -17,10 +17,14 @@ export const createPost = (post) => (dispatch) =>
     )
 )
 
-export const removePost = (id) => ({
-    type: REMOVE_POST,
-    id
-})
+export const removePost = (id) => (dispatch) =>
+    api.deletePost(id).then(() => dispatch(
+        {
+            type: REMOVE_POST,
+            id
+        }
+    )
+)
 
 export const addComment = ({parentID, comment}) => ({
     type: ADD_COMMENT,

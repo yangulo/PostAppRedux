@@ -60,4 +60,16 @@ export const createPost = (post) =>
         console.log('Request failed',error)
     })
     
+// DELETE
+export const deletePost = (id) =>
+    fetch(`${api}/posts/${id}`,{
+        method:'DELETE',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    }).then(response=>response.json())
+    .catch(function(error){
+        console.log('Request failed',error)
+    })
 

@@ -6,13 +6,16 @@ const initialState = []
 const post = (state=initialState, action)=>{
     switch(action.type){
         case POST_COMMENT:
-            let newState=[...state]
-            newState.push(action.post)
-            return newState
+            let newStatePost=[...state]
+            newStatePost.push(action.post)
+            return newStatePost
         case REMOVE_POST:
-            let newStatee=[...state]
-            return newStatee.filter((post)=>
+            let newStateRemove=[...state]
+            return newStateRemove.filter((post)=>
                 post.id!==action.id)
+        case UPDATE_COMMENT:
+            let newStateUpdate=[...state]
+            return 
         default:
             return state
     }

@@ -15,6 +15,9 @@ import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
 import DeleteIcon from '@material-ui/icons/Delete'
 import IconButton from '@material-ui/core/IconButton'
+// Redux
+import {connect} from 'react-redux'
+import {removePost} from '../actions'
 
 class uniquePost extends Component{
     state = {
@@ -24,7 +27,6 @@ class uniquePost extends Component{
     }
 
     componentDidMount = ()=> {
-        
         let postID = this.props.location.search
         postID = postID.split('=')[1]
         this.setState({id:postID})
@@ -37,6 +39,11 @@ class uniquePost extends Component{
                 ))
                 console.log('comments',this.state.postComments)
             }
+    
+    removePost = (event) =>{
+        this.props.removePost(this.state.id)
+        window.location = '/'
+    }
 
     render(){
         let {p, postComments} = this.state
@@ -54,7 +61,7 @@ class uniquePost extends Component{
                             <Button>-1</Button>
                             <IconButton><AddIcon/></IconButton>
                             <IconButton><EditIcon/></IconButton>
-                            <IconButton><DeleteIcon/></IconButton>
+                            <IconButton><DeleteIcon onClick={this.removePost}/></IconButton>
                         </CardActions>
                     </Card>
                     {postComments.length !==0 
@@ -66,4 +73,14 @@ class uniquePost extends Component{
     }
 }
 
-export default uniquePost
+function mapStateToProps({post}) {  
+    console.log(post)
+    return {
+      post
+    }
+  }
+
+export default connect(
+    mapStateToProps,
+    {removePost}
+)(uniquePost)
