@@ -1,7 +1,11 @@
 // General
 import React, {Component} from 'react'
-import * as api from '../utils/api'
 import AllCategoriesList from './list_categories'
+// Api
+import * as api from '../utils/api'
+// Redux
+import {getAllPosts} from '../actions'
+import {connect} from 'react-redux'
 // Expansion Panel
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -16,37 +20,32 @@ import '../utils/style/styles.css'
 
 class AllPostsList extends Component{
     state={
-        allPosts:[],
         allCategories:[],
         expanded: null,
     }
     
     componentDidMount = ()=> {
-        api.getAllPosts().then((posts)=>{
-            this.setState({allPosts: posts})
-            console.log('All Posts',this.state.allPosts)
-        })
+        this.props.getAllPosts()
         api.getAllCategories().then((categories)=>{
             this.setState({allCategories: categories.categories})
-            console.log('All Categories', this.state.allCategories)
         })
     }
-    
+
     handleChange = (id) => (event, expanded) => {
         this.setState({
           expanded: expanded ? id : false,
         })
-        console.log('expanded', this.state.expanded )
     }
     
     render() {
         const { expanded, allCategories } = this.state
+        const { posts } = this.props
         return(
             <div>
                 <h2 className='main_title'>All Posts</h2>
                 <hr className='main_title_hr'/>
                 <div className='expansion_panel'>
-                    {this.state.allPosts.map( post => 
+                    {posts.map( post => 
                         <ExpansionPanel key={post.id} expanded={expanded === post.id} onChange={this.handleChange(post.id)}>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                 <div>
@@ -77,5 +76,13 @@ class AllPostsList extends Component{
     }
 }
 
-export default (AllPostsList)
+function mapStateToProps(state){
+    return {
+        posts: state.post
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    {getAllPosts})(AllPostsList)
 

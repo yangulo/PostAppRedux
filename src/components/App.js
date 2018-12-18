@@ -4,6 +4,7 @@ import AllPostsList from './list_posts'
 import postsByCategory from './posts_by_category'
 import uniquePost from './unique_post'
 import NewPost from './new_post'
+import UpdatePost from './update_post'
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
         <Route exact path='/posts' component={postsByCategory}/>
         <Route exact path='/comments' component={uniquePost}/>
         <Route exact path='/newPost' component={NewPost}/>
+        <Route exact path='/update/post' component={UpdatePost}/>
       </div>
     );
   }

@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import '../utils/style/styles.css'
 import PostComments from './post_comments'
 import EmptyCard from './empty_card'
+// css
+import '../utils/style/styles.css'
 // api
 import * as api from '../utils/api'
 // Cards
@@ -40,9 +41,13 @@ class uniquePost extends Component{
                 console.log('comments',this.state.postComments)
             }
     
-    removePost = (event) =>{
+    removePost = (event)=>{
         this.props.removePost(this.state.id)
         window.location = '/'
+    }
+
+    goUpdatePost = (event)=>{
+        window.location=`/update/post?id=${this.state.id}`
     }
 
     render(){
@@ -54,13 +59,14 @@ class uniquePost extends Component{
                         <CardContent>
                             <Typography  color="textSecondary">{p.title}</Typography>
                             <Typography  color="textSecondary">{p.body}</Typography>
+
                             <Typography >By: {p.author}<br /></Typography>
                         </CardContent>
                         <CardActions>
                             <Button>+1</Button>
                             <Button>-1</Button>
                             <IconButton><AddIcon/></IconButton>
-                            <IconButton><EditIcon/></IconButton>
+                            <IconButton><EditIcon previousPost={this.props.post} onClick={this.goUpdatePost}/></IconButton>
                             <IconButton><DeleteIcon onClick={this.removePost}/></IconButton>
                         </CardActions>
                     </Card>
@@ -73,10 +79,9 @@ class uniquePost extends Component{
     }
 }
 
-function mapStateToProps({post}) {  
-    console.log(post)
+function mapStateToProps(state){  
     return {
-      post
+      post: state.post
     }
   }
 

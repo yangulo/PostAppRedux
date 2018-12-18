@@ -15,36 +15,36 @@ export const getAllPosts = () =>
     fetch(`${api}/posts`, {headers})
         .then((response)=>response.json())
         .catch(function (error){
-                console.log('Request failed',error)
-            })
+            console.log('Request failed',error)
+        })
 
 export const getAllCategories = () =>
-        fetch(`${api}/categories`, {headers})
-            .then((response)=>response.json())
-            .catch(function (error){
-                console.log('Request failed',error)
-            })
+    fetch(`${api}/categories`, {headers})
+       .then((response)=>response.json())
+        .catch(function (error){
+            console.log('Request failed',error)
+        })
 
 export const getPostsByCategory = (category) =>
-        fetch(`${api}/${category}/posts`, {headers})
-            .then((response)=>response.json())
-            .catch(function (error){
-                console.log('Request failed',error)
-            })
+    fetch(`${api}/${category}/posts`, {headers})
+        .then((response)=>response.json())
+        .catch(function (error){
+            console.log('Request failed',error)
+        })
 
 export const getUniquePost = (postID) =>
-        fetch(`${api}/posts/${postID}`, {headers})
-            .then((response) => response.json())
-            .catch(function (error) {
-                console.log('Request failed',error)
-            })
+    fetch(`${api}/posts/${postID}`, {headers})
+        .then((response) => response.json())
+        .catch(function (error) {
+            console.log('Request failed',error)
+        })
 
 export const getPostComments = (postID) =>
-        fetch(`${api}/posts/${postID}/comments`, {headers})
-            .then((response) => response.json())
-            .catch(function (error) {
-                console.log('Request failed',error)
-            })
+    fetch(`${api}/posts/${postID}/comments`, {headers})
+        .then((response) => response.json())
+        .catch(function (error) {
+            console.log('Request failed',error)
+        })
 
 // POST
 export const createPost = (post) =>
@@ -68,6 +68,20 @@ export const deletePost = (id) =>
             ...headers,
             'Content-Type': 'application/json'
         }
+    }).then(response=>response.json())
+    .catch(function(error){
+        console.log('Request failed',error)
+    })
+
+// UPDATE
+export const updatePost = (id, title, body) =>
+    fetch(`${api}/posts/${id}`,{
+        method:'PUT',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({title:title, body:body})
     }).then(response=>response.json())
     .catch(function(error){
         console.log('Request failed',error)

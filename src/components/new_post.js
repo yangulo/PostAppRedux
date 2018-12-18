@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 // Icons
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 // css
 import '../utils/style/styles.css'
 // Text Field
@@ -138,10 +138,9 @@ class NewPost extends Component{
     }
 }
   
-function mapStateToProps({post}) {  
-    console.log(post)
+function mapStateToProps(state){  
     return {
-      post
+      post: state.post
     }
   }
 
