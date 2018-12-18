@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import reducer from './reducers'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
+// import {createHistory} from 'history'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -17,7 +18,8 @@ const store = createStore(
         applyMiddleware(thunk)
     )
 )
-console.log(store.getState())
+
+console.log('store',store.getState())
 
 ReactDOM.render(
 <Provider store={store}>

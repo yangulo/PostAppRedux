@@ -2,6 +2,7 @@
 import * as api from '../utils/api'
 // Posts
 export const ALL_POSTS='ALL_POSTS'
+export const UNIQUE_POST='UNIQUE_POST'
 export const POST_COMMENT='POST_COMMENT'
 export const REMOVE_POST='REMOVE_POST'
 export const UPDATE_POST='UPDATE_POST'
@@ -15,6 +16,12 @@ export const getAllPosts =() => (dispatch) =>
         posts
     }))
 
+export const getUniquePost =(id) => (dispatch) =>
+    api.getUniquePost(id).then(post => dispatch({
+        type: UNIQUE_POST,
+        post
+    }))
+
 export const createPost = (post) => (dispatch) => 
     api.createPost(post).then(post => dispatch(
         {
@@ -25,7 +32,7 @@ export const createPost = (post) => (dispatch) =>
 )
 
 export const removePost = (id) => (dispatch) =>
-    api.deletePost(id).then((id) => dispatch(
+    api.deletePost(id).then(() => dispatch(
         {
             type: REMOVE_POST,
             id

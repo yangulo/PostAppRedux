@@ -13,23 +13,24 @@ import Button from '@material-ui/core/Button'
 import {connect} from 'react-redux'
 import {updatePost} from '../actions'
 
-class UpdatePost extends Component{
+class UpdatePost extends Component {
     
     state={
         post:{
-            title:this.props.previousPost.title,
-            body:'this.previousPost.body',
-            id:'this.previousPost.id'
+            title:'',
+            body:'',
+            id:''
         }
     }
 
     handleChangeTitle=(event)=>{
+        let id = this.props.location.search
         let newTitle = document.getElementById('new title').value
-        console.log(newTitle)
         this.setState({
             post:{
                 ...this.state.post,
-                title:newTitle
+                title:newTitle,
+                id:id
             }
         })
     }
@@ -44,10 +45,10 @@ class UpdatePost extends Component{
         })
     }
 
-    updatePost=()=>{
-        this.props.updatePost(
-            this.state.post)
-        //window.location='/'
+    updateExistingPost = () => {
+        let statePost = this.state.post
+        this.props.updatePost(statePost)
+        console.log(statePost)
     }
 
     render(){
@@ -70,16 +71,17 @@ class UpdatePost extends Component{
                             />
                     </CardContent>
                     <CardActions>
-                        <Button onClick={this.updatePost}>Submit</Button>
+                        <Button onClick={this.updateExistingPost}>Submit</Button>
                     </CardActions>
                 </Card>            
             </div>
         )
     }
 }
-function mapStateToProps({post}){  
+function mapStateToProps(state) {
+    console.log(state)
     return {
-      post
+      post: state.post
     }
   }
 
