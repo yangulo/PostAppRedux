@@ -59,10 +59,35 @@ export const createPost = (post) =>
     .catch(function (error) {
         console.log('Request failed',error)
     })
+
+export const createComment = (comment) =>
+    fetch(`${api}/comments`, {
+        method:'POST',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(comment)
+    }).then(response=>response.json())
+    .catch(function (error) {
+        console.log('Request failed',error)
+    })
     
 // DELETE
 export const deletePost = (id) =>
     fetch(`${api}/posts/${id}`,{
+        method:'DELETE',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    }).then(response=>response.json())
+    .catch(function(error){
+        console.log('Request failed',error)
+    })
+
+export const deleteComment = (id) =>
+    fetch(`${api}/comments/${id}`,{
         method:'DELETE',
         headers:{
             ...headers,
@@ -82,8 +107,10 @@ export const updatePost = (id, title, body) =>
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({title:title, body:body})
-    }).then(response=>response.json())
-    .catch(function(error){
+    }).then(response => {response.json()})
+        .catch(function(error){
         console.log('Request failed',error)
     })
+
+ 
 

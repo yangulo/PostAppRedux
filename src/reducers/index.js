@@ -20,27 +20,14 @@ const post = (state=initialState, action)=>{
             let newUniquePost= action.post
             return newUniquePost
         case POST_COMMENT:
-            let newStatePost= action.post
-            return newStatePost
+            let newPost= action.post
+            return newPost
+        case UPDATE_POST:
+            let postUpdated = action.post
+            return postUpdated
         case REMOVE_POST:
             let newStateRemove=[...state]
-            return newStateRemove.filter((post)=>
-                post.id!==action.id)
-        case UPDATE_POST:
-            let newStateUpdate=[...state]
-            // newStateUpdate.filter((post)=>
-            //     post.id===action.post.id
-            // )
-            console.log('reducer',newStateUpdate)
-            // let tmp = newStateUpdate.filter(post=>
-            //     post.id===action.post.id)
-            // console.log(newStateUpdate)    
-            // console.log(tmp)    
-            // tmp.title=action.post.title
-            // tmp.body=action.post.body
-            // console.log(newStateUpdate)
-            
-            return newStateUpdate
+            return newStateRemove.filter((post)=>post.id!==action.id)
         default:
             return state
     }
@@ -48,9 +35,11 @@ const post = (state=initialState, action)=>{
 const comment = (state=initialState, action) =>{
     switch(action.type){
         case ADD_COMMENT:
-            return state
+            let newComment = action.comment
+            return newComment
         case REMOVE_COMMENT:
-            return state
+            let newCommentRemove=[...state]
+            return newCommentRemove.filter((comment)=>comment.id!==action.id)
         default:
             return state
     }

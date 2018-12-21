@@ -12,7 +12,7 @@ class EmptyCard extends Component{
             <div>
                 <Card className='empty_card'>
                     <CardContent>
-                        <Typography  color="textSecondary">Sorry, nothing yet!</Typography>
+                        <Typography  color="textSecondary">No comments yet. Be the first one!</Typography>
                     </CardContent>
                 </Card>
             </div>

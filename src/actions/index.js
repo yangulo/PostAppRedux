@@ -23,39 +23,31 @@ export const getUniquePost =(id) => (dispatch) =>
     }))
 
 export const createPost = (post) => (dispatch) => 
-    api.createPost(post).then(post => dispatch(
-        {
-            type: POST_COMMENT,
-            post
-        }
-    )
-)
+    api.createPost(post).then(post => dispatch({
+        type: POST_COMMENT,
+        post
+    }))
 
 export const removePost = (id) => (dispatch) =>
-    api.deletePost(id).then(() => dispatch(
-        {
-            type: REMOVE_POST,
-            id
-        }
-    )
-)
+    api.deletePost(id).then(() => dispatch({
+        type: REMOVE_POST,
+        id
+    }))
 
-export const updatePost = (post) => (dispatch) =>
-    api.updatePost(post.id, post.title, post.body).then((post) => dispatch(
-        {
-            type: UPDATE_POST,
-            post
-        }
-    )
-)
+export const updatePost = (id, title, body) => (dispatch) =>
+    api.updatePost(id, title, body).then((post) => dispatch({
+        type: UPDATE_POST,
+        post
+    }))
 
-export const addComment = ({parentID, comment}) => ({
-    type: ADD_COMMENT,
-    parentID,
-    comment
-})
+export const addComment = (comment) => (dispatch) =>
+    api.createComment(comment).then(comment => dispatch({
+        type: ADD_COMMENT,
+        comment
+    }))
 
-export const removeComment = ({commentID}) => ({
-    type: REMOVE_COMMENT,
-    commentID
-})
+export const removeComment = (id) => (dispatch) =>
+    api.deleteComment(id).then(() => dispatch({
+        type: REMOVE_COMMENT,
+        id
+    }))
