@@ -4,7 +4,7 @@ import AllCategoriesList from './list_categories'
 // Api
 import * as api from '../utils/api'
 // Redux
-import {getAllPosts} from '../actions'
+import {getAllPosts, orderByMaxScore, orderByMostCurrent} from '../actions'
 import {connect} from 'react-redux'
 // Expansion Panel
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
@@ -15,6 +15,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 // Floating button
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
+// Chips
+import Chip from '@material-ui/core/Chip'
 // ccs
 import '../utils/style/styles.css'
 
@@ -36,6 +38,14 @@ class AllPostsList extends Component{
           expanded: expanded ? id : false,
         })
     }
+
+    orderByMaxScore=(event)=>{
+        this.props.orderByMaxScore()
+    }
+
+    orderByMostCurrent=(event)=>{
+        this.props.orderByMostCurrent()
+    }
     
     render() {
         const { expanded, allCategories } = this.state
@@ -45,20 +55,31 @@ class AllPostsList extends Component{
                 <h2 className='main_title'>All Posts</h2>
                 <hr className='main_title_hr'/>
                 <div className='expansion_panel'>
+                    {/* TODO Order by score */}
+                    <Chip className='max' label='Max Top' variant="outlined" onClick={this.orderByMaxScore}/>
+                    <Chip className='max' label='Most Current' variant="outlined" onClick={this.orderByMostCurrent}/>
                     {posts.map( post => 
                         <ExpansionPanel key={post.id} expanded={expanded === post.id} onChange={this.handleChange(post.id)}>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                <div>
+                                <Typography>
+                                    {post.title}
+                                    <a className='post_link' href={`/comments?id=${post.id}`}>Go Post</a>
+                                </Typography>    
+                                <div className='posts'>
                                     <Typography>
-                                        {post.title}
-                                        <a className='post_link' href={`/comments?id=${post.id}`}>Go post</a>
+                                        {post.category}
                                     </Typography>
                                 </div>
-                                <div className='posts'><Typography>{post.category}</Typography></div>
                             </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
-                                    <div className='post_body'><Typography>{post.author}</Typography></div>
-                                    <div><Typography>{post.body}</Typography></div>
+                                    <Typography className='post_body'>
+                                        {post.author}
+                                    </Typography>        
+                                    <Typography>
+                                        {post.body}
+                                        <br/>
+                                        Votes: {post.voteScore}
+                                    </Typography>
                                 </ExpansionPanelDetails>
                         </ExpansionPanel>
                     )}
@@ -78,11 +99,11 @@ class AllPostsList extends Component{
 
 function mapStateToProps(state){
     return {
-        posts: state.post
+        posts: state.post.postList.posts
     }
 }
 
 export default connect(
     mapStateToProps,
-    {getAllPosts})(AllPostsList)
+    {getAllPosts, orderByMaxScore, orderByMostCurrent})(AllPostsList)
 

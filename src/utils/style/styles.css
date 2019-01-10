@@ -34,6 +34,19 @@
     text-transform:capitalize;
 }
 
+.max{
+    margin-bottom: 10px;
+    margin-right: 10px;
+    text-transform:capitalize;
+}
+
+.goHome{
+    position: absolute;
+    right: 0px;
+    margin-right: 50px;
+    text-transform:capitalize;
+}
+
 .post_link{
     margin-left: 10px;
 }

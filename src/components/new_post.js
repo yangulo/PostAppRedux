@@ -127,8 +127,6 @@ class NewPost extends Component{
                             onChange={this.handleChangeBody}/>
                         </CardContent>
                         <CardActions>
-                            <Button>+1</Button>
-                            <Button>-1</Button>
                             <Button onClick={this.createPost}>Submit</Button>
                         </CardActions>
                     </Card>
@@ -140,7 +138,7 @@ class NewPost extends Component{
   
 function mapStateToProps(state){  
     return {
-      post: state.post
+      post: state.post.newPost.post,
     }
   }
 

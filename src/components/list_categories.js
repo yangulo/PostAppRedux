@@ -1,7 +1,7 @@
 //General
 import React, {Component} from 'react'
 // Chips
-import Chip from '@material-ui/core/Chip';
+import Chip from '@material-ui/core/Chip'
 // ccs
 import '../utils/style/styles.css'
 

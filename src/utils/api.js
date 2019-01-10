@@ -39,6 +39,13 @@ export const getUniquePost = (postID) =>
             console.log('Request failed',error)
         })
 
+export const getUniqueComment = (commentId) =>
+    fetch(`${api}/comments/${commentId}`, {headers})
+        .then((response) => response.json())
+        .catch(function (error) {
+            console.log('Request failed',error)
+        })
+
 export const getPostComments = (postID) =>
     fetch(`${api}/posts/${postID}/comments`, {headers})
         .then((response) => response.json())
@@ -70,6 +77,58 @@ export const createComment = (comment) =>
         body: JSON.stringify(comment)
     }).then(response=>response.json())
     .catch(function (error) {
+        console.log('Request failed',error)
+    })
+
+export const upVotePost = (id) =>
+    fetch(`${api}/posts/${id}`, {
+        method:'POST',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({option:'upVote'})
+    }).then(response=>response.json())
+    .catch(function(error){
+        console.log('Request failed',error)
+    })
+
+export const downVotePost = (id) =>
+    fetch(`${api}/posts/${id}`, {
+        method:'POST',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({option:'downVote'})
+    }).then(response=>response.json())
+    .catch(function(error){
+        console.log('Request failed',error)
+    })
+
+    export const upVoteComment = (id) =>
+    fetch(`${api}/comments/${id}`, {
+        method:'POST',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({option:'upVote'})
+    }).then(response=>response.json())
+    .catch(function(error){
+        console.log('Request failed',error)
+    })
+
+export const downVoteComment = (id) =>
+    fetch(`${api}/comments/${id}`, {
+        method:'POST',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({option:'downVote'})
+    }).then(response=>response.json())
+    .catch(function(error){
         console.log('Request failed',error)
     })
     
@@ -107,10 +166,21 @@ export const updatePost = (id, title, body) =>
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({title:title, body:body})
-    }).then(response => {response.json()})
+    }).then(response => response.json())
         .catch(function(error){
         console.log('Request failed',error)
     })
 
- 
+export const modifyComment = (id, timestamp, body) =>
+    fetch(`${api}/comments/${id}`,{
+        method:'PUT',
+        headers:{
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({timestamp:timestamp, body:body})
+    }).then(response=>response.json())
+        .catch(function(error){
+        console.log('Request failed',error)
+    })
 

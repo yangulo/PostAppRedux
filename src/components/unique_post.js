@@ -26,32 +26,42 @@ import {
     getUniquePost,
     updatePost,
     addComment,
-    removeComment} from '../actions'
+    removeComment,
+    updateComment,
+    upVotePost,
+    downVotePost,
+    upVoteComment,
+    downVoteComment,
+    getAllComments} from '../actions'
 
 class uniquePost extends Component{
     state = {
         id:'',
         title:'',
         body:'',
-        postComments:[],
         open:false,
         commentOpen:false,
+        openCommentUpdate:false,
         comment:{
             id:'', 
             timestamp:'',
             body:'', 
             author:'', 
             parentId:''
-        }
+        },
+        cbody:'',
+        ctimestamp:'',
+        cid:'',
     }
 
     componentDidMount = () => {
         let postID = this.props.location.search
         postID = postID.split('=')[1]
         this.props.getUniquePost(postID)
-        this.setState({id:postID})
-        api.getPostComments(postID).then((comments)=>
-            this.setState({postComments:comments}))
+        this.props.getAllComments(postID)
+        this.setState({
+            id:postID
+        })
     }
     
     // Remove Post
@@ -81,7 +91,16 @@ class uniquePost extends Component{
         let title = this.state.title
         let body = this.state.body
         this.props.updatePost(id, title, body)
-        window.location = '/'
+        //window.location = '/'
+    }
+
+    // Vote Score Post
+    plusVotePost=(id)=>{
+        this.props.upVotePost(id)
+    }
+
+    lessVotePost=(id)=>{
+        this.props.downVotePost(id)
     }
 
     // Add Comment
@@ -135,52 +154,87 @@ class uniquePost extends Component{
                 timestamp: this.generateTimestamp(),
                 id: this.generateUUID(),
                 parentId: postID,
-            }}, ()=>{this.props.addComment(this.state.comment)})
+            }}, ()=>{
+                this.props.addComment(this.state.comment)})
         this.setState({commentOpen:false})
-        window.location = '/'
+        //window.location = '/'
     }
 
     // Remove Comment
     toDeleteComment =(id)=>{
-        console.log('event clicked', id)
         this.props.removeComment(id)
-        window.location = '/'
+    }
+
+    // Update Comment
+    showUpdatedComment=(id)=>{
+        this.setState({cid:id})
+        this.setState({openCommentUpdate:true})
+    }
+
+    handleCommentUpdatedBody=(event)=>{
+        let cBody=document.getElementById('comment updated body').value
+        this.setState({cbody:cBody})
+    }
+
+    updateComment=(event)=>{
+        this.setState({openCommentUpdate:false})
+        let timestamp = this.generateTimestamp()
+        this.setState({ctimestamp:timestamp})
+        this.props.updateComment(this.state.cid, this.state.ctimestamp, this.state.cbody)
+        //window.location = '/'
+    }
+
+    // Vote Score Comment
+    plusVoteComment=(id)=>{
+        this.props.upVoteComment(id)
+    }
+
+    lessVoteComment=(id)=>{
+        this.props.downVoteComment(id)
+    }
+
+    goHome=(event)=>{
+        window.location='/'
     }
 
     render(){
-        let {postComments, open, commentOpen} = this.state
-        let {singlePost} = this.props
+        let {open, commentOpen, openCommentUpdate} = this.state
+        let {singlePost, comments} = this.props
         return(
             <div>
+                {/* {POST} */}
                 <div className='post_card'>
                     <Card>
                         <CardContent>
                             <Typography color="textSecondary">{singlePost.title}</Typography>
                             <Typography color="textSecondary">{singlePost.body}</Typography>
-                            <Typography>By: {singlePost.author}<br/></Typography>
+                            <Typography>By: {singlePost.author}</Typography>
+                            <Typography>Votes: {singlePost.voteScore}</Typography>
                         </CardContent>
                         <CardActions>
-                            <Button>+1</Button>
-                            <Button>-1</Button>
+                            <Button onClick={()=>this.plusVotePost(singlePost.id)}>+1</Button>
+                            <Button onClick={()=>this.lessVotePost(singlePost.id)}>-1</Button>
                             <IconButton><AddIcon onClick={this.goNewComment}/></IconButton>
                             <IconButton><EditIcon onClick={this.showUpdateDialog}/></IconButton>
                             <IconButton><DeleteIcon onClick={this.removePost}/></IconButton>
                         </CardActions>
                     </Card>
-                    {postComments.length !==0 ? 
+
+                {/* {COMMENTS LIST} */}
+                    {comments.length !==0 ? 
                         <div>
-                            {postComments.map(comment =>
+                            {comments.map(comment =>
                                 <div key={comment.id}>
                                     <Card className='post_comment_card'>
                                     <CardContent>
                                         <Typography>{comment.body}</Typography>
                                         <Typography>{comment.author}</Typography>
-                                        <Typography>{comment.voteScore}</Typography>
+                                        <Typography>Votes: {comment.voteScore}</Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button>+1</Button>
-                                        <Button>-1</Button>
-                                        <IconButton><EditIcon/></IconButton>
+                                        <Button onClick={()=>this.plusVoteComment(comment.id)}>+1</Button>
+                                        <Button onClick={()=>this.lessVoteComment(comment.id)}>-1</Button>
+                                        <IconButton><EditIcon onClick={()=>this.showUpdatedComment(comment.id)}/></IconButton>
                                         <IconButton><DeleteIcon onClick={()=>this.toDeleteComment(comment.id)}/></IconButton>
                                     </CardActions>
                                     </Card>
@@ -189,6 +243,10 @@ class uniquePost extends Component{
                                 )}
                         </div>
                         : <EmptyCard/>}
+                    
+                    <button className='goHome' onClick={this.goHome}>Home</button>
+
+                    {/* {POST UPDATED} */}
                     {open ? 
                     <div>
                         <Dialog open={open}>
@@ -214,6 +272,8 @@ class uniquePost extends Component{
                             </DialogActions>
                         </Dialog>
                     </div> : '' }
+
+                    {/* {ADD COMMENT} */}
                     {commentOpen ?
                         <Dialog open={commentOpen}>
                             <DialogTitle>Add a new comment!</DialogTitle>
@@ -237,6 +297,25 @@ class uniquePost extends Component{
                                     <Button label="Ok" onClick={this.createComment}>Ok</Button>
                                 </DialogActions>
                         </Dialog> : ''}
+
+                    {/* {COMMENT UPDATED} */}
+                    {openCommentUpdate ?
+                        <Dialog open={openCommentUpdate}>
+                            <DialogTitle>Update this comment!</DialogTitle>
+                            <DialogContentText className='dialog'>
+                            To update this comment. please enter new content.
+                            </DialogContentText>
+                                <div className='dialog'>
+                                    <TextField 
+                                    id='comment updated body'
+                                    placeholder='Share your thoughts!' 
+                                    label="Content:" 
+                                    onChange={this.handleCommentUpdatedBody}/>
+                                </div>
+                                <DialogActions>
+                                    <Button label="Ok" onClick={this.updateComment}>Ok</Button>
+                                </DialogActions>
+                        </Dialog> : ''}
                 </div>
             </div>
         )
@@ -245,8 +324,8 @@ class uniquePost extends Component{
 
 function mapStateToProps(state){  
     return {
-      singlePost: state.post,
-      comment: state.newComment
+        singlePost: state.post.singlePost.post,
+        comments: state.comment.commentsList.comments,
     }
   }
 
@@ -257,4 +336,10 @@ export default connect(
         getUniquePost, 
         updatePost, 
         addComment,
-        removeComment})(uniquePost)
+        removeComment,
+        updateComment,
+        upVotePost,
+        downVotePost,
+        upVoteComment,
+        downVoteComment,
+        getAllComments})(uniquePost)
